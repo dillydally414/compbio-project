@@ -1,0 +1,47 @@
+#!/bin/bash -l
+#
+# Run this file using 'qsub its_hmmbuild.qsub path/to/input.sto path/to/output.hmm'
+
+# All lines starting with "#$" are SGE qsub commands
+
+# Specify a project to run under
+#$ -P bi720
+
+# Give this job a name
+#$ -N its_hmmbuild
+
+# Join standard output and error to a single file
+#$ -j y
+
+# Name the file where to redirect standard output and error
+#$ -o logs/its_hmmbuild.log
+
+# Send an email when the job finishes
+#$ -m eas
+
+# Request a large memory node, this will affect your queue time, but it's better to overestimate
+# -l mem_per_core=8G
+
+# Request more cores, this will affect your queue time, make sure your program supports multithreading, or it's a waste
+# -pe omp 1
+
+# Now we write the script that the compute node will work on.
+source ./common.sh
+prerun
+
+# load modules
+module load hmmer/3.3.2
+
+# do some work
+
+# Input file pattern: reads the input file
+infile="$(default $1 ${datafolder}/its_msa.sto)"
+outfile="$(default $2 ${datafolder}/dillon_test.hmm)"
+
+
+run "hmmbuild $outfile $infile"
+
+postrun
+
+
+

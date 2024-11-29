@@ -1,0 +1,44 @@
+#!/bin/bash -l
+#
+# Run this file using 'qsub process_fasta.qsub path/to/input.xfasta'
+
+# All lines starting with "#$" are SGE qsub commands
+
+# Specify a project to run under
+#$ -P bi720
+
+# Give this job a name
+#$ -N process_xfasta
+
+# Join standard output and error to a single file
+#$ -j y
+
+# Name the file where to redirect standard output and error
+#$ -o logs/process_xfasta.log
+
+# Send an email when the job finishes
+#$ -m eas
+
+# Now we write the script that the compute node will work on.
+
+source ./common.sh
+prerun
+
+# load modules
+module load python3/3.12.4
+
+# do some work
+
+datafolder="/projectnb/bi720/MMG/compbio"
+
+# Input file pattern: reads the input file
+infile="$(default $1 ${datafolder}/fungi_its_secondary_structure.xfasta)"
+seqfile="${datafolder}/fungi_its_seq.fasta"
+strfile="${datafolder}/fungi_its_str.fasta"
+
+run "python process_xfasta.py -i $infile --seq $seqfile --str $strfile"
+
+postrun
+
+
+
