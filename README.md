@@ -1,11 +1,11 @@
 # Comp Bio Project Aim 3 (Secondary Structure)
 
 Todos:
-- [X] Generate HMM using HMMER
-- [ ] Determine how to use HMMER to build trees.
-  - Brief search suggests that we may not need HMMER since HMMER is mainly used to generate a multiple sequence alignment but we are using something else (ClustalOmega) to generate the multiple sequence alignment
-- [ ] Determine how to combine sequence and structure information
-  - Existing literature performs a joining operation over the distance matrices calculated during multiple sequence alignment
+- [ ] Use ViennaRNA to calculate RNA structure distance and output matrix
+- [ ] Use ClustalOmega to calculate RNA sequence distance and output matrix (not MSA)
+- [ ] Combine matrices with weights (Distatis package)
+- [ ] Build a tree from UPGMA
+- [ ] Compare output tree to JGI tree (confer with group 1)
 
 ## Scripts
 
