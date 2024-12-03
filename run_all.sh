@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# If any command-line argument is provided, such as "test", this will run only the 20-sample analysis. 
+
+source ./common.sh
+
+sample="fungi_"
+if [[ -n "$1" ]];
+  then sample="sample_20_"
+fi
+
+prefix="$datafolder/$sample"
+
 # arg1 = qsub script
 # arg2 = hold (if needed)
 function qsub_id() {
@@ -10,10 +21,23 @@ function qsub_id() {
   echo "$(qsub $hold $1 | cut -d ' ' -f 3)"
 }
 
-xfasta_hold="$(qsub_id process_xfasta.qsub)"
-seq_hold="$(qsub_id '-o logs/its_msa_seq.log its_msa.qsub /projectnb/bi720/MMG/compbio/fungi_its_seq.fasta /projectnb/bi720/MMG/compbio/its_seq_msa.sto' $xfasta_hold)"
-str_hold="$(qsub_id '-o logs/its_msa_str.log its_msa.qsub /projectnb/bi720/MMG/compbio/fungi_its_str.fasta /projectnb/bi720/MMG/compbio/its_str_msa.sto' $xfasta_hold)"
-seq_hold="$(qsub_id '-o logs/its_hmmbuild_seq.log its_hmmbuild.qsub /projectnb/bi720/MMG/compbio/its_seq_msa.sto /projectnb/bi720/MMG/compbio/its_seq.hmm' $seq_hold)"
-str_hold="$(qsub_id '-o logs/its_hmmbuild_str.log its_hmmbuild.qsub /projectnb/bi720/MMG/compbio/its_str_msa.sto /projectnb/bi720/MMG/compbio/its_str.hmm' $str_hold)"
+# split xfasta into sequence and structure
+combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta")"
 
+# run clustal omega on sequence
+seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}seq_dist_matrix.mat ${prefix}its_msa.sto" $combined_hold)"
+
+# run vienna rna on structure
+# str_hold="$(qsub_id "????.qsub ${prefix}its_str.fasta ${prefix}str_dist_matrix.mat ????" $combined_hold)"
+
+# run distatis on distance matrices
+# combined_hold="$(qsub_id "????.qsub ${prefix}seq_dist_matrix.mat ${prefix}str_dist_matrix.mat ????" $seq_hold,$str_hold)"
+
+# run upgma on combined matrix
+# combined_hold="$(qsub_id "????.qsub ????" $combined_hold)"
+
+# run evaluation on output tree
+# combined_hold="$(qsub_id "????.qsub ????" $combined_hold)"
+
+# print submitted jobs
 qstat -u $(whoami)

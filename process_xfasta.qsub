@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #
-# Run this file using 'qsub process_fasta.qsub path/to/input.xfasta'
+# Run this file using 'qsub process_fasta.qsub path/to/input.xfasta path/to/seq.fasta path/to/str.fasta'
 
 # All lines starting with "#$" are SGE qsub commands
 
@@ -32,9 +32,9 @@ module load python3/3.12.4
 datafolder="/projectnb/bi720/MMG/compbio"
 
 # Input file pattern: reads the input file
-infile="$(default $1 ${datafolder}/fungi_its_secondary_structure.xfasta)"
-seqfile="${datafolder}/fungi_its_seq.fasta"
-strfile="${datafolder}/fungi_its_str.fasta"
+infile="$(default $1 ${datafolder}/fungi_its.xfasta)"
+seqfile="$(default $2 ${datafolder}/fungi_its_seq.fasta)"
+strfile="$(default $3 ${datafolder}/fungi_its_str.fasta)"
 
 run "python process_xfasta.py -i $infile --seq $seqfile --str $strfile"
 
