@@ -44,7 +44,7 @@ outfile="$(default $3 ${datafolder}/fungi_its_msa.sto)"
 
 # distmat only works with --full, however this slows down the process as it does not use clustering to simplify.
 
-run "clustalo -i $infile --full --distmat-out=$distout -o $outfile --outfmt=$outfmt"
+run "clustalo --force -i $infile --full --distmat-out=$distout -o $outfile --outfmt=$outfmt"
 
 postrun
 
