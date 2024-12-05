@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Run this script with ???
 # If any command-line argument is provided, such as "test", this will run only the 20-sample analysis. 
 
 source ./common.sh
@@ -28,7 +29,7 @@ combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_s
 seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}seq_dist_matrix.mat ${prefix}its_msa.sto" $combined_hold)"
 
 # run vienna rna on structure
-# str_hold="$(qsub_id "????.qsub ${prefix}its_str.fasta ${prefix}str_dist_matrix.mat ????" $combined_hold)"
+str_hold="$(qsub_id its_rnadistance.qsub ${prefix}its_str.fasta ${prefix}str_alignment.txt ${prefix}str_dist_matrix.txt ${prefix}str_dist.csv" $combined_hold)"
 
 # run distatis on distance matrices
 # combined_hold="$(qsub_id "????.qsub ${prefix}seq_dist_matrix.mat ${prefix}str_dist_matrix.mat ????" $seq_hold,$str_hold)"

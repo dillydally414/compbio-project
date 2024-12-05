@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #
-# Run this file using 'qsub its_rnadistance.qsub path/to/input.fasta path/to/output.log'
+# Run this file using 'qsub its_rnadistance.qsub path/to/input.fasta path/to/output_alignment.txt path/to/output_matrix_test.txt path/to/output_matrix.csv'
 
 # All lines starting with "#$" are SGE qsub commands
 
@@ -31,12 +31,13 @@ source ./common.sh
 prerun
 
 # load modules
+module load python3/3.12.4
 module load viennarna/2.4.10
 
 # do some work
 datafolder="/projectnb/bi720/MMG/compbio"
 
-infile="$(default $1 ${datafolder}/sample_20_its_str.fasta)"
+infile="$(default $1 ${datafolder}/fungi_its_str.fasta)"
 alignment="$(default $2 ${datafolder}/fungi_str_alignment.txt)"
 matrix="$(default $3 ${datafolder}/fungi_str_dist_matrix.txt)"
 outfile="$(default $4 ${datafolder}/fungi_str_dist.csv)"
