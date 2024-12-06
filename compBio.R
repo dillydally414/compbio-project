@@ -63,7 +63,7 @@ weightedTree <- function(seq,structure,weightseq,weightstr){
 
 x <- 0.1
 y <- 0.9
-for(i in 1:10){
+for(i in 1:9){
   weightedTree(seq,structure,x,y)
   x <- x+0.1
   y <- y-0.1
