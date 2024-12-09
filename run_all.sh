@@ -26,7 +26,7 @@ function qsub_id() {
 combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta")"
 
 # run clustal omega on sequence
-seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}seq_dist_matrix.mat ${prefix}its_msa.sto" $combined_hold)"
+seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}its_msa.sto ${prefix}seq_dist_matrix.mat ${prefix}seq_dist.csv" $combined_hold)"
 
 # run vienna rna on structure
 str_hold="$(qsub_id "its_rnadistance.qsub ${prefix}its_str.fasta ${prefix}str_alignment.txt ${prefix}str_dist_matrix.txt ${prefix}str_dist.csv" $combined_hold)"

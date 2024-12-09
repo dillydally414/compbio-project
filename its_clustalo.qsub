@@ -1,6 +1,6 @@
 #!/bin/bash -l
 #
-# Run this file using 'qsub its_clustalo.qsub path/to/input.fasta path/to/matrix.mat path/to/msa.sto'
+# Run this file using 'qsub its_clustalo.qsub path/to/msa.sto path/to/input.fasta path/to/dist.mat path/to/dist.csv'
 
 # All lines starting with "#$" are SGE qsub commands
 
@@ -38,13 +38,15 @@ module load clustalomega/1.2.1
 datafolder="/projectnb/bi720/MMG/compbio"
 
 infile="$(default $1 ${datafolder}/fungi_its.fasta)"
-distout="$(default $2 ${datafolder}/fungi_seq_dist_matrix.mat)"
-outfmt="st"
-outfile="$(default $3 ${datafolder}/fungi_its_msa.sto)"
+msafmt="st"
+msa="$(default $2 ${datafolder}/fungi_its_msa.sto)"
+matrix="$(default $3 ${datafolder}/fungi_seq_dist_matrix.mat)"
+distfile="$(default $4 ${datafolder}/fungi_seq_dist.csv)"
 
 # distmat only works with --full, however this slows down the process as it does not use clustering to simplify.
 
-run "clustalo --force -i $infile --full --distmat-out=$distout -o $outfile --outfmt=$outfmt"
+run "clustalo --force -i $infile --full --distmat-out=$matrix -o $msa --outfmt=$msafmt"
+run "python mat_to_csv.py -m $matrix -a $infile -o $distfile"
 
 postrun
 

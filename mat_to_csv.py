@@ -17,9 +17,9 @@ def mat_to_csv(matfile: Path, csvfile: Path, fastafile: Path = None):
 
 if __name__ == "__main__":
   argparser = ArgumentParser()
-  argparser.add_argument("-i", dest="matfile", type=Path)
+  argparser.add_argument("-m", dest="matfile", type=Path)
   argparser.add_argument("-o", dest="csvfile", type=Path)
-  argparser.add_argument("--name-replacement", dest="fastafile", type=Path)
+  argparser.add_argument("-a", dest="alnfile", type=Path)
   args = argparser.parse_args()
 
-  mat_to_csv(args.matfile, args.csvfile, args.fastafile)
+  mat_to_csv(args.matfile, args.csvfile, args.alnfile)
