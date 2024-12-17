@@ -47,7 +47,8 @@ all_nyes <- NyeSimilarity(jgi, trees, normalize = pmax.int)
 # Since the following scores are similarity scores, they range from 0-1 with 1 being a perfect match.
 #
 # Aim 1: 0.6906
-# Aim 2 (both): 0.8417
+# Aim 2 (no JGI): 0.6572
+# Aim 2 (JGI): 0.8417
 # 
 # ----- Aim 3 -----
 # 10-90: 0.6281
