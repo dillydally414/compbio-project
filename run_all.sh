@@ -23,7 +23,7 @@ function qsub_id() {
 }
 
 # split xfasta into sequence and structure
-combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta")"
+combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta $datafolder/taxonomy_db.csv")"
 
 # run clustal omega on sequence
 seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}its_msa.sto ${prefix}seq_dist_matrix.mat ${prefix}seq_dist.csv" $combined_hold)"
