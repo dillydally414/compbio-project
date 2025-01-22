@@ -2,6 +2,7 @@
 
 # Some common functionality to avoid repeating it in each qsub
 
+mkdir -p logs
 datafolder="/projectnb/bi720/MMG/compbio"
 
 function default() {
