@@ -31,14 +31,14 @@ seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}seq_dist_
 # run vienna rna on structure
 str_hold="$(qsub_id "its_rnadistance.qsub ${prefix}its_str.fasta ${prefix}str_alignment.txt ${prefix}str_dist_matrix.txt ${prefix}str_dist.csv" $combined_hold)"
 
-# run distatis on distance matrices
-# combined_hold="$(qsub_id "????.qsub ${prefix}seq_dist_matrix.mat ${prefix}str_dist_matrix.mat ????" $seq_hold,$str_hold)"
+# run distatis on distance matrices and run upgma on combined matrices
+combined_hold="$(qsub_id "distatis_weights_upgma.qsub ${prefix}seq_dist.csv ${prefix}str_dist.csv ${sample}" $seq_hold,$str_hold)"
 
-# run upgma on combined matrix
+# score trees
 # combined_hold="$(qsub_id "????.qsub ????" $combined_hold)"
 
-# run evaluation on output tree
-# combined_hold="$(qsub_id "????.qsub ????" $combined_hold)"
+# run evaluation on output trees
+combined_hold="$(qsub_id "compare_tree_scores.qsub ${prefix}scores.csv ${sample}" $combined_hold)"
 
 # print submitted jobs
 qstat -u $(whoami)

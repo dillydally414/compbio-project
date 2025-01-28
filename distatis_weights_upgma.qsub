@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/bin/bash -l
 #
-# Run this file using 'qsub compare_tree_scores.sh path/to/scores.csv sample'
+# Run this file using 'qsub distatis_weights_upgma.qsub'
 
 # All lines starting with "#$" are SGE qsub commands
 
@@ -8,13 +8,13 @@
 #$ -P bi720
 
 # Give this job a name
-#$ -N compare_tree_scores
+#$ -N distatis_weights_upgma
 
 # Join standard output and error to a single file
 #$ -j y
 
 # Name the file where to redirect standard output and error
-#$ -o /projectnb/bi720/MMG/2fungi2furious/hpenn13/compbio-project/logs/compare_tree_scores.log
+#$ -o logs/distatis_weights_upgma.log
 
 # Send an email when the job finishes
 #$ -m eas
@@ -31,15 +31,17 @@ source ./common.sh
 prerun
 
 # load modules
-source /etc/profile.d/modules.sh
 module load R/4.4.0
 
 # do some work
-datafolder="/projectnb/bi720/MMG/2fungi2furious/hpenn13/compbio-project"
+datafolder="/projectnb/bi720/MMG/compbio"
 
-scores="$(default $1 ${datafolder}/sample_20_scores.csv)"
+sequence="$(default $1 ${datafolder}/sample_20_seq_dist.csv)"
+structure="$(default $2 ${datafolder}/sample_20_str_dist.csv)"
 sample="$(default $3 "sample_20_")"
+# output path of netwick files for scoring
+path="$(default $4 '/projectnb/bi720/MMG/compbio/comparisons/')"
 
-run "Rscript --vanilla compare_tree_scores.R $scores $sample"
+run "Rscript --vanilla distatis_weights_upgma.R $sequence $structure $sample $path"
 
 postrun

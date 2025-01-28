@@ -36,5 +36,5 @@ ggplot(scores, aes(x=tree, y=score,group = 1)) +
   labs(x = "Phylogeny", y = "Score", 
        title = "Phylogeny Score for Varying Primary Sequence + Secondary Structure Weights", shape = c("weights","distatis"))
 ggsave(
-  paste0('/projectnb/bi720/MMG/compbio/aim3/',sample,'structure_sequence_treescore_lineplot.png'),
+  paste0('./',sample,'structure_sequence_treescore_lineplot.png'),
   plot = last_plot())

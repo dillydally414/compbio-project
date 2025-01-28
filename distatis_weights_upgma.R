@@ -3,6 +3,10 @@
 #aim 3
 
 #Packages
+r = getOption("repos")
+r["CRAN"] = "http://cran.us.r-project.org"
+options(repos = r)
+install.packages("DistatisR")
 library(DistatisR)
 library(data.table)
 library(phangorn)
@@ -15,19 +19,22 @@ print(args)
 seq <- ''
 structure <- ''
 sample <- ''
+path <- ''
 
 # test if there is at least 3 arguments: if not, return an error
-if (length(args) < 3) {
+if (length(args) < 4) {
   stop('At least three arguments must be supplied.', call.=FALSE)
-} else if (length(args)==3) {
+} else if (length(args)==4) {
   seq = args[1] 
   structure = args[2] 
   sample = args[3]
+  path = args[4]
 }
 
 print(seq)
 print(structure)
 print(sample)
+print(path)
 
 #sequence distance matrix
 seq <- fread(seq)
@@ -59,9 +66,9 @@ combined_distatis_weights
 #UPGMA
 phylogeneticTree <- function(tree,name,newick){
   #write tree as Newick file for scoring
-  ape::write.tree(tree, file=paste0('/projectnb/bi720/MMG/compbio/comparisons/',name,'.txt'))
+  ape::write.tree(tree, file=paste0(path,name,'.txt'))
   #save visual of tree
-  png(filename = paste0('/projectnb/bi720/MMG/compbio/Aim3_trees/',name,'.png'))
+  png(filename = paste0('./',name,'.png'))
   plot(newick)
   dev.off()
 }
@@ -77,29 +84,12 @@ phylogeneticTree(tree_seq,paste0(sample,'_seq_tree'),tree_seq)
 tree_str <- upgma(as.dist(structure))
 phylogeneticTree(tree_str,paste0(sample,'_seq_tree'),tree_str)
 
-#write tree as Newick file for scoring
-#ape::write.tree(tree_comb_py, file=paste0('/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_seq_str_tree.txt'))
-#save visual of tree
-#png(filename = "/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_seq_str_tree.png")
-#plot(tree_comb)
-#dev.off()
-#tree_seq <- upgma(as.dist(seq))
-#ape::write.tree(tree_seq, file=paste0('/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_seq_tree.txt'))
-#png(filename = "/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_seq_tree.png")
-#plot(tree_seq)
-#dev.off()
-#tree_str <- upgma(as.dist(structure))
-#ape::write.tree(tree_str, file=paste0('/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_str_tree.txt'))
-#png(filename = "/projectnb/bi720/MMG/compbio/Aim3_trees/sample_20_str_tree.png")
-#plot(tree_str)
-#dev.off()
-
 #Weighted trees function
 weightedTree <- function(seq,structure,weightseq,weightstr){
   comb <- weightseq*seq + weightstr*structure
   tree_comb <- upgma(as.dist(comb))
-  ape::write.tree(tree_comb, file=paste0('/projectnb/bi720/MMG/compbio/comparisons/',sample,'comb',weightseq,weightstr,'seqstr_tree.txt'))
-  png(filename = paste0('/projectnb/bi720/MMG/compbio/Aim3_trees/',sample,'comb',weightseq,weightstr,'seqstr_tree.png'))
+  ape::write.tree(tree_comb, file=paste0(path,sample,'comb',weightseq,weightstr,'seqstr_tree.txt'))
+  png(filename = paste0('./',sample,'comb',weightseq,weightstr,'seqstr_tree.png'))
   plot(tree_comb)
   dev.off()
 }
