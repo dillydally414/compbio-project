@@ -1,0 +1,50 @@
+#!/bin/bash -l
+#
+# Run this file using 'qsub its_rnadistance.qsub path/to/input.fasta path/to/output_alignment.txt path/to/output_matrix_test.txt path/to/output_matrix.csv'
+
+# All lines starting with "#$" are SGE qsub commands
+
+# Specify a project to run under
+#$ -P bi720
+
+# Give this job a name
+#$ -N its_rnadistance
+
+# Join standard output and error to a single file
+#$ -j y
+
+# Name the file where to redirect standard output and error
+#$ -o logs/its_rnadistance.log
+
+# Send an email when the job finishes
+#$ -m eas
+
+# Request a large memory node, this will affect your queue time, but it's better to overestimate
+# -l mem_per_core=8G
+
+# Request more cores, this will affect your queue time, make sure your program supports multithreading, or it's a waste
+# -pe omp 1
+
+# Now we write the script that the compute node will work on.
+
+source ./common.sh
+prerun
+
+# load modules
+module load python3/3.12.4
+module load viennarna/2.4.10
+
+# do some work
+
+infile="$(default $1 ${datafolder}/fungi_its_str.fasta)"
+alignment="$(default $2 ${datafolder}/fungi_str_alignment.txt)"
+matrix="$(default $3 ${datafolder}/fungi_str_dist_matrix.txt)"
+outfile="$(default $4 ${datafolder}/fungi_str_dist.csv)"
+
+run "cat $infile | RNAdistance --compare=m −−distance=F --backtrack=$alignment > $matrix"
+run "python vrna_to_csv.py -m $matrix -a $alignment -o $outfile"
+
+postrun
+
+
+
