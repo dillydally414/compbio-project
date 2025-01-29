@@ -33,14 +33,11 @@ prerun
 # load modules
 module load R/4.4.0
 
-# do some work
-datafolder="/projectnb/bi720/MMG/compbio"
-
-sequence="$(default $1 ${datafolder}/sample_20_seq_dist.csv)"
-structure="$(default $2 ${datafolder}/sample_20_str_dist.csv)"
-sample="$(default $3 "sample_20_")"
+sequence="$(default $1 ${datafolder}/fungi_seq_dist.csv)"
+structure="$(default $2 ${datafolder}/fungi_str_dist.csv)"
+sample="$(default $3 "fungi_")"
 # output path of netwick files for scoring
-path="$(default $4 '/projectnb/bi720/MMG/compbio/comparisons/')"
+path="$(default $4 ${datafolder}/comparisons/)"
 
 run "Rscript --vanilla distatis_weights_upgma.R $sequence $structure $sample $path"
 

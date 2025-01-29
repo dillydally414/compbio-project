@@ -31,14 +31,10 @@ source ./common.sh
 prerun
 
 # load modules
-source /etc/profile.d/modules.sh
 module load R/4.4.0
 
-# do some work
-datafolder="/projectnb/bi720/MMG/compbio"
-
-scores="$(default $1 ${datafolder}/sample_20_scores.csv)"
-sample="$(default $2 "sample_20_")" 
+scores="$(default $1 ${datafolder}/fungi_scores.csv)"
+sample="$(default $2 "fungi_")" 
 
 run "Rscript --vanilla compare_tree_scores.R $scores $sample"
 

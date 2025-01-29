@@ -32,13 +32,13 @@ seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}seq_dist_
 str_hold="$(qsub_id "its_rnadistance.qsub ${prefix}its_str.fasta ${prefix}str_alignment.txt ${prefix}str_dist_matrix.txt ${prefix}str_dist.csv" $combined_hold)"
 
 # run distatis on distance matrices and run upgma on combined matrices
-combined_hold="$(qsub_id "distatis_weights_upgma.qsub ${prefix}seq_dist.csv ${prefix}str_dist.csv ${sample}" $seq_hold,$str_hold)"
+distatis_hold="$(qsub_id "distatis_weights_upgma.qsub ${prefix}seq_dist.csv ${prefix}str_dist.csv ${sample} ${datafolder}/comparisons/" $seq_hold,$str_hold)"
 
 # score trees
-# combined_hold="$(qsub_id "????.qsub ????" $combined_hold)"
+# score_hold="$(qsub_id "????.qsub ????" $distatis_hold)"
 
 # run evaluation on output trees
-combined_hold="$(qsub_id "compare_tree_scores.qsub ${prefix}scores.csv ${sample}" $combined_hold)"
+evaluation_hold="$(qsub_id "compare_tree_scores.qsub ${prefix}scores.csv ${sample}" $score_hold)"
 
 # print submitted jobs
 qstat -u $(whoami)
