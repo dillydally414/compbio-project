@@ -1,3 +1,8 @@
+"""
+Processes .xfasta file from ITS2 database into sequence and structure fasta files. 
+Also splits by family assignment from a provided taxonomy file
+"""
+
 from argparse import ArgumentParser
 from pathlib import Path
 import pandas as pd

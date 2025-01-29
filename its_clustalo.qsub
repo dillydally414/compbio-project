@@ -36,8 +36,6 @@ module load clustalomega/1.2.1
 
 # do some work
 
-datafolder="/projectnb/bi720/MMG/compbio"
-
 infile="$(default $1 ${datafolder}/fungi_its.fasta)"
 msafmt="st"
 msa="$(default $2 ${datafolder}/fungi_its_msa.sto)"

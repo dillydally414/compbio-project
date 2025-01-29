@@ -27,10 +27,6 @@ prerun
 # load modules
 module load python3/3.12.4
 
-# do some work
-
-datafolder="/projectnb/bi720/MMG/compbio"
-
 # Input file pattern: reads the input file
 infile="$(default $1 ${datafolder}/fungi_its.xfasta)"
 seqfile="$(default $2 ${datafolder}/fungi_its_seq.fasta)"
