@@ -1,0 +1,41 @@
+#!/bin/bash -l
+#
+# Run this file using 'qsub compare_tree_scores.sh'
+
+# All lines starting with "#$" are SGE qsub commands
+
+# Specify a project to run under
+#$ -P bi720
+
+# Give this job a name
+#$ -N compare_tree_scores
+
+# Join standard output and error to a single file
+#$ -j y
+
+# Name the file where to redirect standard output and error
+#$ -o logs/compare_tree_scores.log
+
+# Send an email when the job finishes
+#$ -m eas
+
+# Request a large memory node, this will affect your queue time, but it's better to overestimate
+# -l mem_per_core=8G
+
+# Request more cores, this will affect your queue time, make sure your program supports multithreading, or it's a waste
+# -pe omp 1
+
+# Now we write the script that the compute node will work on.
+
+source ./common.sh
+prerun
+
+# load modules
+module load R/4.4.0
+
+scores="$(default $1 ${datafolder}/fungi_scores.csv)"
+sample="$(default $2 "fungi_")" 
+
+run "Rscript --vanilla compare_tree_scores.R $scores $sample"
+
+postrun
