@@ -1,3 +1,5 @@
+#!/usr/bin/env Rscript
+
 #Comp Bio Final Project
 #Helen Pennington
 #aim 3
@@ -6,7 +8,13 @@
 r = getOption("repos")
 r["CRAN"] = "http://cran.us.r-project.org"
 options(repos = r)
-install.packages("DistatisR")
+
+.libPaths('~') # To add packages to the R search folders
+library.path <- .libPaths()
+install.packages("DistatisR", lib="~")
+install.packages("pvclust", lib="~")
+
+
 library(DistatisR)
 library(data.table)
 library(phangorn)
@@ -74,15 +82,15 @@ phylogeneticTree <- function(tree,name,newick){
 }
 
 #pvclust is needed to produce upgma plot for distatis output matrix
-tree_comb <- pvclust(combined_distatis_matrix, method.dist="cor", method.hclust="average", nboot=1000, parallel=TRUE)
+tree_comb <- pvclust(combined_distatis_matrix, method.dist="cor", method.hclust="average", nboot=1000, parallel=FALSE)
 tree_comb_py<-as.phylo(tree_comb$hclust)
-phylogeneticTree(tree_comb_py,paste0(sample,'_seq_str_tree'),tree_comb)
+phylogeneticTree(tree_comb_py,paste0(sample,'seq_str_tree'),tree_comb)
 
 tree_seq <- upgma(as.dist(seq))
-phylogeneticTree(tree_seq,paste0(sample,'_seq_tree'),tree_seq)
+phylogeneticTree(tree_seq,paste0(sample,'seq_tree'),tree_seq)
 
 tree_str <- upgma(as.dist(structure))
-phylogeneticTree(tree_str,paste0(sample,'_seq_tree'),tree_str)
+phylogeneticTree(tree_str,paste0(sample,'seq_tree'),tree_str)
 
 #Weighted trees function
 weightedTree <- function(seq,structure,weightseq,weightstr){
