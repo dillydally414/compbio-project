@@ -1,3 +1,7 @@
+"""
+Converts .mat file from ClustalOmega to csv.
+"""
+
 from argparse import ArgumentParser
 from pathlib import Path
 import subprocess

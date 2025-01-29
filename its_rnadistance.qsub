@@ -35,7 +35,6 @@ module load python3/3.12.4
 module load viennarna/2.4.10
 
 # do some work
-datafolder="/projectnb/bi720/MMG/compbio"
 
 infile="$(default $1 ${datafolder}/fungi_its_str.fasta)"
 alignment="$(default $2 ${datafolder}/fungi_str_alignment.txt)"

@@ -31,11 +31,10 @@ source ./common.sh
 prerun
 
 # load modules
+module load python3/3.12.4
 module load clustalomega/1.2.1
 
 # do some work
-
-datafolder="/projectnb/bi720/MMG/compbio"
 
 infile="$(default $1 ${datafolder}/fungi_its.fasta)"
 msafmt="st"

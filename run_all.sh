@@ -5,6 +5,8 @@
 
 source ./common.sh
 
+# sets the default sample to “fungi_” if you run bash run_all.sh 
+# if you provide any argument (ie bash run_all.sh test) it runs with “sample_20_”
 sample="fungi_"
 if [[ -n "$1" ]];
   then sample="sample_20_"
@@ -12,6 +14,9 @@ fi
 
 prefix="$datafolder/$sample"
 
+# This function submits a qsub script and extracts the job id from the resulting message. If passed a second argument,
+# the second argument is used as a hold on this script (in other words, this script will not run until the job with the given id has finished).
+# This allows us to submit all of our qsubs in one run without worrying about race conditions. 
 # arg1 = qsub script
 # arg2 = hold (if needed)
 function qsub_id() {
@@ -23,7 +28,7 @@ function qsub_id() {
 }
 
 # split xfasta into sequence and structure
-combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta")"
+combined_hold="$(qsub_id "process_xfasta.qsub ${prefix}its.xfasta ${prefix}its_seq.fasta ${prefix}its_str.fasta $datafolder/taxonomy_db.csv")"
 
 # run clustal omega on sequence
 seq_hold="$(qsub_id "its_clustalo.qsub ${prefix}its_seq.fasta ${prefix}its_msa.sto ${prefix}seq_dist_matrix.mat ${prefix}seq_dist.csv" $combined_hold)"
